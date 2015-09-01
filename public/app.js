@@ -11,7 +11,7 @@ var app = angular.module('jsdataWorkshop', ['js-data', 'ui.router'])
     DSProvider.defaults.idAttribute = '_id';
     /*
     a method to the DSProvider defaults object that automatically
-    checks if there is any data in the cache for a given service before 
+    checks if there is any data in the cache for a given service before
     pinging the database
     */
     DSProvider.defaults.getOrFind = function(service){
@@ -28,14 +28,14 @@ var app = angular.module('jsdataWorkshop', ['js-data', 'ui.router'])
     removes the relations from an object before the request is sent to the DB
     (this is hard!)
     */
-    DSProvider.defaults.serialize = function (resource, data) {
-      if (resource.relationFields && resource.relationFields.length){
-        data = angular.copy(data);
-        resource.relationFields.forEach(function(relation){
-          if(data[relation] && typeof data[relation] === 'object') data[relation] = data[relation]._id
-        })
-      }
-    }
+    // DSProvider.defaults.serialize = function (resource, data) {
+    //   if (resource.relationFields && resource.relationFields.length){
+    //     data = angular.copy(data);
+    //     resource.relationFields.forEach(function(relation){
+    //       if(data[relation] && typeof data[relation] === 'object') data[relation] = data[relation]._id
+    //     })
+    //   }
+    // }
 
   })
   .config(function(DSProvider) {
@@ -62,14 +62,14 @@ var app = angular.module('jsdataWorkshop', ['js-data', 'ui.router'])
                 });
               }
             }
-          } 
+          }
           else if (def.type === 'belongsTo') {
             if (i.hasOwnProperty(def.localField)) {
-              // if the localfIeld is a popualted object 
+              // if the localfIeld is a popualted object
               if (JSData.DSUtils.isObject(i[def.localField])) {
                 i[def.localKey] = i[def.localField]._id;
-              } 
-              // if the localfield is an object id 
+              }
+              // if the localfield is an object id
               else if (!JSData.DSUtils.isObject(i[def.localField])) {
                 i[def.localKey] = i[def.localField];
                 delete i[def.localField];
@@ -94,6 +94,3 @@ var app = angular.module('jsdataWorkshop', ['js-data', 'ui.router'])
     };
     // End Mongoose Relation fix
   })
-
-
-

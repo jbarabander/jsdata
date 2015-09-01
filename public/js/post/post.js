@@ -1,10 +1,10 @@
-'use strict'; 
+'use strict';
 
 app.config(function($stateProvider) {
 	$stateProvider.state('post', {
 		url: '/post/:postId',
 		templateUrl: 'js/post/post.html',
-		controller: 'PostCtrl', 
+		controller: 'PostCtrl',
 		resolve: {
 			users: function(User){
 				// GET - > '/api/users'
@@ -14,26 +14,43 @@ app.config(function($stateProvider) {
 	})
 });
 
-// add necessary dependencies 
-app.controller('PostCtrl', function() {
+// add necessary dependencies
+app.controller('PostCtrl', function($scope, $stateParams, Post) {
+	$scope.editing = false;
+	var findPost = function() {
+		Post.find($stateParams.postId).then(function(element) {
+			$scope.post = element;
+			console.log($scope.post);
+		});
+	};
+	$scope.deletePost = function() {
+	}
 
+	$scope.editPost = function(editObj) {
+		console.log(editObj);
+		editObj.DSUpdate({title: editObj.title, body: editObj.body}).then(function() {
+			$scope.editing = false;
+		})
+	}
+
+	findPost($stateParams.postId);
 
 	/* 1. FIND POST
-		use state params to retrieve the post id and attach post object to scope 
-		on controller load 
+		use state params to retrieve the post id and attach post object to scope
+		on controller load
 	*/
 
 	/*
-		2. DELETE POST 
-		create a function that destroys the post, adds an alert that the post has been 
-		successfully deleted, and redirects to the main state. 
+		2. DELETE POST
+		create a function that destroys the post, adds an alert that the post has been
+		successfully deleted, and redirects to the main state.
 	*/
 
 	/*
-		3. EDIT POST 
-		create a function that edits the post, adds an alert that the post has been 
-		successfully edited, and displays the edited post.  
+		3. EDIT POST
+		create a function that edits the post, adds an alert that the post has been
+		successfully edited, and displays the edited post.
 
 	*/
 
-})
+});
