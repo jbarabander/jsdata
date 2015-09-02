@@ -15,7 +15,7 @@ app.config(function($stateProvider) {
 });
 
 // add necessary dependencies
-app.controller('PostCtrl', function($scope, $stateParams, Post) {
+app.controller('PostCtrl', function($scope, $stateParams, Post, $state) {
 	$scope.editing = false;
 	var findPost = function() {
 		Post.find($stateParams.postId).then(function(element) {
@@ -23,8 +23,11 @@ app.controller('PostCtrl', function($scope, $stateParams, Post) {
 			console.log($scope.post);
 		});
 	};
-	$scope.deletePost = function() {
-	}
+	$scope.deletePost = function(postObj) {
+		Post.destroy(postObj._id).then(function() {
+			$state.go('main');
+		});
+	};
 
 	$scope.editPost = function(editObj) {
 		console.log(editObj);
